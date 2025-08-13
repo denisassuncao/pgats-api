@@ -1,0 +1,98 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Transferências",
+    "version": "1.0.0",
+    "description": "API para login, registro, consulta de usuários e transferências."
+  },
+  "servers": [
+    { "url": "http://localhost:3000" }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login realizado com sucesso" },
+          "400": { "description": "Usuário e senha obrigatórios" },
+          "401": { "description": "Usuário ou senha inválidos" }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Registro de usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" },
+                  "favorites": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Usuário criado com sucesso" },
+          "400": { "description": "Usuário e senha obrigatórios" },
+          "409": { "description": "Usuário já existe" }
+        }
+      },
+      "get": {
+        "summary": "Consulta de usuários",
+        "responses": {
+          "200": { "description": "Lista de usuários" }
+        }
+      }
+    },
+    "/transfer": {
+      "post": {
+        "summary": "Transferência de valores",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "value": { "type": "number" }
+                },
+                "required": ["from", "to", "value"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Transferência realizada com sucesso" },
+          "400": { "description": "Erro de validação ou regra de negócio" }
+        }
+      }
+    }
+  }
+}
