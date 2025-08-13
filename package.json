@@ -4,10 +4,15 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "mocha src/test/**/*.test.js --timeout 10000"
   },
   "dependencies": {
+    "chai": "^5.2.1",
     "express": "^4.18.2",
+    "mocha": "^11.7.1",
+    "sinon": "^21.0.0",
+    "supertest": "^7.1.4",
     "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
