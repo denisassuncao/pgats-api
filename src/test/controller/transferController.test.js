@@ -18,7 +18,7 @@ describe('Transfer Controller', () => {
                 value: 100
             });
             expect(resposta.status).to.equal(400);
-            expect(resposta.body.error).to.equal('Usuário não encontrado');
+            expect(resposta.body).to.have.property('error', 'Usuário não encontrado');
         });
     });
 
