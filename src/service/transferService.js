@@ -1,16 +1,37 @@
+const users = require('../model/userModel');
 const transfers = require('../model/transferModel');
-const { findUserByUsername } = require('./userService');
 
-function transfer(from, to, value) {
-  const sender = findUserByUsername(from);
-  const recipient = findUserByUsername(to);
-  if (!sender || !recipient) return { error: 'Usuário não encontrado' };
-  if (from === to) return { error: 'Não é possível transferir para si mesmo' };
-  if (!sender.favorites?.includes(to) && value >= 5000) {
-    return { error: 'Transferência acima de R$ 5.000,00 só para favorecidos' };
+function transfer({ from, to, value }) {
+  const sender = users.find(u => u.username === from);
+  const recipient = users.find(u => u.username === to);
+
+    if (!sender || !recipient) {
+    throw new Error('Usuário remetente ou destinatário não encontrado');
   }
-  transfers.push({ from, to, value, date: new Date() });
-  return { success: true };
+
+    if (typeof value !== 'number' || value <= 0) {
+    throw new Error('Valor inválido');
+  }
+
+    if (sender.saldo < value) {
+    throw new Error('Saldo insuficiente');
+  }
+
+  const isFavorecido = sender.favorecidos && sender.favorecidos.includes(to);
+  if (!isFavorecido && value >= 5000) {
+    throw new Error('Transferência acima de R$ 5.000,00 só para favorecidos');
+  }
+
+  sender.saldo -= value;
+  recipient.saldo += value;
+
+  const transfer = { from, to, value, date: new Date().toISOString() };
+  transfers.push(transfer);
+  return transfer;
 }
 
-module.exports = { transfer };
+function listTransfers() {
+  return transfers;
+}
+
+module.exports = { transfer, listTransfers };
