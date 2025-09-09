@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "mocha src/test/**/*.test.js --timeout 10000"
+    "test": "mocha src/test/**/*.test.js --timeout 10000",
+    "test-external": "mocha src/test/external/**/*.test.js --timeout 10000",
+    "test-controller": "mocha src/test/controller/**/*.test.js --timeout 10000"
   },
   "dependencies": {
     "chai": "^5.2.1",
